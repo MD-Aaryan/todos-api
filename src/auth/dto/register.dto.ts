@@ -3,6 +3,7 @@ import {
   IsNotEmpty,
   isString,
   IsString,
+  Matches,
   MaxLength,
   maxLength,
   MinLength,
@@ -22,6 +23,7 @@ export class RegisterDto {
   @IsString()
   @MinLength(5)
   @MaxLength(15)
+  @Matches(/^\d+$/, { message: 'The mobile number must contain only number' })
   mobile: string;
 
   @IsNotEmpty()
