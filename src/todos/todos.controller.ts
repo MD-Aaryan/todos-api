@@ -11,11 +11,10 @@ import {
 import { TodosService } from './todos.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
-import { request } from 'express';
 import { User } from '@prisma/client';
 
 interface TodoRequest extends Request {
-  payload: User;
+  user: User;
 }
 
 @Controller('todos')
@@ -24,18 +23,18 @@ export class TodosController {
 
   @Post()
   create(@Body() createTodoDto: CreateTodoDto, @Req() request: TodoRequest) {
-    createTodoDto.user_id = request.payload.id;
+    createTodoDto.user_id = request.user.id;
     return this.todosService.create(createTodoDto);
   }
 
   @Get()
   findAll(@Req() request: TodoRequest) {
-    return this.todosService.findAll(request.payload.id);
+    return this.todosService.findAll(request.user.id);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string, @Req() request: TodoRequest) {
-    return this.todosService.findOne(+id, request.payload.id);
+    return this.todosService.findOne(+id, request.user.id);
   }
 
   @Patch(':id')
@@ -44,11 +43,11 @@ export class TodosController {
     @Body() updateTodoDto: UpdateTodoDto,
     @Req() request: TodoRequest,
   ) {
-    return this.todosService.update(+id, updateTodoDto, request.payload.id);
+    return this.todosService.update(+id, updateTodoDto, request.user.id);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string, @Req() request: TodoRequest) {
-    return this.todosService.remove(+id, request.payload.id);
+    return this.todosService.remove(+id, request.user.id);
   }
 }

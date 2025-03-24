@@ -6,7 +6,7 @@ import { JwtService } from '@nestjs/jwt';
 
 async function bootstrap() {
   //application new instannce is created here
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
 
   //register all middlewares
   app.useGlobalPipes(new ValidationPipe());
@@ -14,5 +14,6 @@ async function bootstrap() {
 
   //start the application in specific port
   await app.listen(process.env.PORT ?? 3000);
+  console.log(`Application is running on: ${process.env.PORT ?? 3000}`);
 }
 bootstrap();
