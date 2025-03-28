@@ -32,7 +32,7 @@ export class AuthService {
 
     if (user) {
       throw new BadRequestException(
-        'this mobole number has been arleady taken',
+        'this mobile number has been arleady taken',
       );
     }
     registerDto.password = await hash(registerDto.password, 10);
@@ -60,10 +60,10 @@ export class AuthService {
     }
 
     if (!(await compare(loginDto.password, user.password))) {
-      throw new UnauthorizedException(`invalid credentails`);
+      throw new UnauthorizedException(`invalid  password`);
     }
 
-    const tokan = await this.jwtService.signAsync(user);
-    return { tokan };
+    const token = await this.jwtService.signAsync(user);
+    return { token };
   }
 }
