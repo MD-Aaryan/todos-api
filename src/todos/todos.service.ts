@@ -20,20 +20,25 @@ export class TodosService {
   }
 
   async update(id: number, updateTodoDto: UpdateTodoDto, user_id: number) {
+    console.log(updateTodoDto);
     const todo = await this.getTodo(id, user_id);
     if (!todo) {
       throw new NotFoundException(`Todo not found`);
     }
-    return this.prisma.todo.update({
+    const updatedTodo = await this.prisma.todo.update({
       where: { id },
       data: {
         title: updateTodoDto.title,
         ...(updateTodoDto.description && {
           description: updateTodoDto.description,
         }),
-        ...(updateTodoDto.status && { status: updateTodoDto.status }),
+        ...(updateTodoDto.status !== undefined && {
+          status: updateTodoDto.status,
+        }),
       },
     });
+    console.log({ updatedTodo });
+    return updatedTodo;
   }
 
   async remove(id: number, user_id: number) {
